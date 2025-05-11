@@ -1,0 +1,913 @@
+GIT_LFS_SKIP_SMUDGE=1 git clone https://huggingface.co/spaces/enzostvs/deepsite 
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анализатор кейсов EB-1A | Умная предварительная оценка вашей петиции</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #9333ea 100%);
+        }
+        .file-upload:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .criteria-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .progress-bar {
+            transition: width 1.5s ease-in-out;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50">
+    <!-- Навигация -->
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-passport text-indigo-600 text-2xl mr-2"></i>
+                        <span class="text-xl font-bold text-gray-900">Анализатор EB-1A</span>
+                    </div>
+                </div>
+                <div class="hidden sm:ml-6 sm:flex sm:items-center">
+                    <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-indigo-600">Главная</a>
+                    <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-indigo-600">Как это работает</a>
+                    <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-indigo-600">Цены</a>
+                    <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-indigo-600">Контакты</a>
+                    <button class="ml-4 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Войти
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Герой-секция -->
+    <div class="gradient-bg text-white">
+        <div class="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
+                    Умная оценка кейса EB-1A
+                </h1>
+                <p class="mt-6 max-w-2xl mx-auto text-xl">
+                    Получите анализ ваших материалов для петиции EB-1A с помощью ИИ. 
+                    Выявите слабые места, снизьте риски RFE и усильте ваш кейс.
+                </p>
+                <div class="mt-10">
+                    <button id="startAnalysisBtn" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-indigo-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white">
+                        Начать анализ сейчас
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Как это работает -->
+    <div class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:text-center">
+                <h2 class="text-base text-indigo-600 font-semibold tracking-wide uppercase">Процесс</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    Простая оценка в 3 шага
+                </p>
+            </div>
+
+            <div class="mt-10">
+                <div class="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10">
+                    <div class="relative">
+                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                            <span class="text-xl font-bold">1</span>
+                        </div>
+                        <div class="ml-16">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">Загрузите материалы</h3>
+                            <p class="mt-2 text-base text-gray-500">
+                                Отправьте черновик петиции (по желанию) и подтверждающие документы по каждому критерию EB-1A.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                            <span class="text-xl font-bold">2</span>
+                        </div>
+                        <div class="ml-16">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">Анализ ИИ</h3>
+                            <p class="mt-2 text-base text-gray-500">
+                                Наша система оценивает ваши материалы по требованиям USCIS и выявляет сильные и слабые стороны.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                            <span class="text-xl font-bold">3</span>
+                        </div>
+                        <div class="ml-16">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">Получите отчет</h3>
+                            <p class="mt-2 text-base text-gray-500">
+                                Получите детальную обратную связь с оценкой готовности, рисками RFE и конкретными рекомендациями.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Выбор критериев (изначально скрыт) -->
+    <div id="criteriaSection" class="hidden py-12 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    Выберите критерии EB-1A
+                </h2>
+                <p class="mt-4 max-w-2xl text-xl text-gray-500 mx-auto">
+                    Отметьте критерии EB-1A, которые вы хотите оценить. Для каждого выбранного критерия нужно будет загрузить подтверждающие документы.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Карточка критерия "Награды" -->
+                <div class="criteria-card bg-white overflow-hidden shadow rounded-lg transition duration-300 ease-in-out">
+                    <div class="px-4 py-5 sm:p-6">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 bg-indigo-500 rounded-md p-3">
+                                <i class="fas fa-trophy text-white"></i>
+                            </div>
+                            <div class="ml-5 w-0 flex-1">
+                                <h3 class="text-lg font-medium text-gray-900">Награды</h3>
+                                <div class="mt-2 flex items-center">
+                                    <input id="awards-checkbox" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                    <label for="awards-checkbox" class="ml-2 text-sm text-gray-500">Выбрать этот критерий</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <p class="text-sm text-gray-500">
+                                Доказательства национальных или международных наград за выдающиеся достижения.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Карточка критерия "Членство" -->
+                <div class="criteria-card bg-white overflow-hidden shadow rounded-lg transition duration-300 ease-in-out">
+                    <div class="px-4 py-5 sm:p-6">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 bg-indigo-500 rounded-md p-3">
+                                <i class="fas fa-users text-white"></i>
+                            </div>
+                            <div class="ml-5 w-0 flex-1">
+                                <h3 class="text-lg font-medium text-gray-900">Членство</h3>
+                                <div class="mt-2 flex items-center">
+                                    <input id="membership-checkbox" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                    <label for="membership-checkbox" class="ml-2 text-sm text-gray-500">Выбрать этот критерий</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <p class="text-sm text-gray-500">
+                                Членство в ассоциациях, требующих выдающихся достижений от своих членов.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Карточка критерия "Публикации" -->
+                <div class="criteria-card bg-white overflow-hidden shadow rounded-lg transition duration-300 ease-in-out">
+                    <div class="px-4 py-5 sm:p-6">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 bg-indigo-500 rounded-md p-3">
+                                <i class="fas fa-newspaper text-white"></i>
+                            </div>
+                            <div class="ml-5 w-0 flex-1">
+                                <h3 class="text-lg font-medium text-gray-900">Публикации</h3>
+                                <div class="mt-2 flex items-center">
+                                    <input id="published-checkbox" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                    <label for="published-checkbox" class="ml-2 text-sm text-gray-500">Выбрать этот критерий</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <p class="text-sm text-gray-500">
+                                Публикации о вас в профессиональных или крупных отраслевых изданиях.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Карточка критерия "Судейство" -->
+                <div class="criteria-card bg-white overflow-hidden shadow rounded-lg transition duration-300 ease-in-out">
+                    <div class="px-4 py-5 sm:p-6">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 bg-indigo-500 rounded-md p-3">
+                                <i class="fas fa-gavel text-white"></i>
+                            </div>
+                            <div class="ml-5 w-0 flex-1">
+                                <h3 class="text-lg font-medium text-gray-900">Судейство</h3>
+                                <div class="mt-2 flex items-center">
+                                    <input id="judging-checkbox" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                    <label for="judging-checkbox" class="ml-2 text-sm text-gray-500">Выбрать этот критерий</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <p class="text-sm text-gray-500">
+                                Доказательства оценки работы других, индивидуально или в составе жюри.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Карточка критерия "Вклад" -->
+                <div class="criteria-card bg-white overflow-hidden shadow rounded-lg transition duration-300 ease-in-out">
+                    <div class="px-4 py-5 sm:p-6">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 bg-indigo-500 rounded-md p-3">
+                                <i class="fas fa-lightbulb text-white"></i>
+                            </div>
+                            <div class="ml-5 w-0 flex-1">
+                                <h3 class="text-lg font-medium text-gray-900">Вклад</h3>
+                                <div class="mt-2 flex items-center">
+                                    <input id="contribution-checkbox" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                    <label for="contribution-checkbox" class="ml-2 text-sm text-gray-500">Выбрать этот критерий</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <p class="text-sm text-gray-500">
+                                Доказательства вашего оригинального вклада в науку, искусство, спорт или бизнес.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Карточка критерия "Авторство" -->
+                <div class="criteria-card bg-white overflow-hidden shadow rounded-lg transition duration-300 ease-in-out">
+                    <div class="px-4 py-5 sm:p-6">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 bg-indigo-500 rounded-md p-3">
+                                <i class="fas fa-pen-fancy text-white"></i>
+                            </div>
+                            <div class="ml-5 w-0 flex-1">
+                                <h3 class="text-lg font-medium text-gray-900">Авторство</h3>
+                                <div class="mt-2 flex items-center">
+                                    <input id="authorship-checkbox" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                    <label for="authorship-checkbox" class="ml-2 text-sm text-gray-500">Выбрать этот критерий</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <p class="text-sm text-gray-500">
+                                Доказательства ваших научных статей в профессиональных или крупных отраслевых изданиях.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-10 text-center">
+                <button id="continueToUploadBtn" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Перейти к загрузке документов
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Секция загрузки документов (изначально скрыта) -->
+    <div id="uploadSection" class="hidden py-12 bg-white">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    Загрузите ваши документы
+                </h2>
+                <p class="mt-4 text-xl text-gray-500">
+                    Для каждого выбранного критерия загрузите подтверждающие документы (PDF, DOCX, TXT или изображения)
+                </p>
+            </div>
+
+            <!-- Загрузка для наград (условно) -->
+            <div id="awardsUpload" class="mb-8 p-6 bg-gray-50 rounded-lg">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">
+                    <i class="fas fa-trophy text-indigo-600 mr-2"></i>
+                    Документы по наградам
+                </h3>
+                <p class="text-sm text-gray-500 mb-4">
+                    Загрузите документы, подтверждающие ваши национальные или международные награды. Примеры:
+                    <span class="block mt-1 text-indigo-600">Дипломы, правила конкурса, публикации в СМИ, информация о жюри</span>
+                </p>
+                <div class="mt-4 file-upload">
+                    <label class="block text-sm font-medium text-gray-700">Загрузить файлы</label>
+                    <div class="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md transition duration-300 ease-in-out">
+                        <div class="space-y-1 text-center">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <div class="flex text-sm text-gray-600">
+                                <label for="awards-files" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                                    <span>Загрузить файлы</span>
+                                    <input id="awards-files" name="awards-files" type="file" class="sr-only" multiple>
+                                </label>
+                                <p class="pl-1">или перетащите сюда</p>
+                            </div>
+                            <p class="text-xs text-gray-500">PDF, DOCX, TXT, JPG, PNG до 10MB</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <label for="awards-text" class="block text-sm font-medium text-gray-700">Или вставьте текст петиции о наградах (по желанию)</label>
+                    <textarea id="awards-text" name="awards-text" rows="3" class="mt-1 block w-full shadow-sm sm:text-sm border border-gray-300 rounded-md"></textarea>
+                </div>
+            </div>
+
+            <!-- Загрузка для членства (условно) -->
+            <div id="membershipUpload" class="mb-8 p-6 bg-gray-50 rounded-lg hidden">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">
+                    <i class="fas fa-users text-indigo-600 mr-2"></i>
+                    Документы по членству
+                </h3>
+                <p class="text-sm text-gray-500 mb-4">
+                    Загрузите документы, подтверждающие ваше членство в ассоциациях. Примеры:
+                    <span class="block mt-1 text-indigo-600">Членские удостоверения, уставы ассоциаций, критерии отбора</span>
+                </p>
+                <div class="mt-4 file-upload">
+                    <label class="block text-sm font-medium text-gray-700">Загрузить файлы</label>
+                    <div class="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md transition duration-300 ease-in-out">
+                        <div class="space-y-1 text-center">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <div class="flex text-sm text-gray-600">
+                                <label for="membership-files" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                                    <span>Загрузить файлы</span>
+                                    <input id="membership-files" name="membership-files" type="file" class="sr-only" multiple>
+                                </label>
+                                <p class="pl-1">или перетащите сюда</p>
+                            </div>
+                            <p class="text-xs text-gray-500">PDF, DOCX, TXT, JPG, PNG до 10MB</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <label for="membership-text" class="block text-sm font-medium text-gray-700">Или вставьте текст петиции о членстве (по желанию)</label>
+                    <textarea id="membership-text" name="membership-text" rows="3" class="mt-1 block w-full shadow-sm sm:text-sm border border-gray-300 rounded-md"></textarea>
+                </div>
+            </div>
+
+            <!-- Загрузка для публикаций (условно) -->
+            <div id="publishedUpload" class="mb-8 p-6 bg-gray-50 rounded-lg hidden">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">
+                    <i class="fas fa-newspaper text-indigo-600 mr-2"></i>
+                    Документы по публикациям
+                </h3>
+                <p class="text-sm text-gray-500 mb-4">
+                    Загрузите документы, подтверждающие публикации о вас. Примеры:
+                    <span class="block mt-1 text-indigo-600">Статьи в СМИ, интервью, материалы в отраслевых изданиях</span>
+                </p>
+                <div class="mt-4 file-upload">
+                    <label class="block text-sm font-medium text-gray-700">Загрузить файлы</label>
+                    <div class="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md transition duration-300 ease-in-out">
+                        <div class="space-y-1 text-center">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <div class="flex text-sm text-gray-600">
+                                <label for="published-files" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                                    <span>Загрузить файлы</span>
+                                    <input id="published-files" name="published-files" type="file" class="sr-only" multiple>
+                                </label>
+                                <p class="pl-1">или перетащите сюда</p>
+                            </div>
+                            <p class="text-xs text-gray-500">PDF, DOCX, TXT, JPG, PNG до 10MB</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <label for="published-text" class="block text-sm font-medium text-gray-700">Или вставьте текст петиции о публикациях (по желанию)</label>
+                    <textarea id="published-text" name="published-text" rows="3" class="mt-1 block w-full shadow-sm sm:text-sm border border-gray-300 rounded-md"></textarea>
+                </div>
+            </div>
+
+            <!-- Загрузка для судейства (условно) -->
+            <div id="judgingUpload" class="mb-8 p-6 bg-gray-50 rounded-lg hidden">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">
+                    <i class="fas fa-gavel text-indigo-600 mr-2"></i>
+                    Документы по судейству
+                </h3>
+                <p class="text-sm text-gray-500 mb-4">
+                    Загрузите документы, подтверждающие ваше участие в оценке работ других. Примеры:
+                    <span class="block mt-1 text-indigo-600">Приглашения, программы мероприятий, сертификаты участия</span>
+                </p>
+                <div class="mt-4 file-upload">
+                    <label class="block text-sm font-medium text-gray-700">Загрузить файлы</label>
+                    <div class="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md transition duration-300 ease-in-out">
+                        <div class="space-y-1 text-center">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <div class="flex text-sm text-gray-600">
+                                <label for="judging-files" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                                    <span>Загрузить файлы</span>
+                                    <input id="judging-files" name="judging-files" type="file" class="sr-only" multiple>
+                                </label>
+                                <p class="pl-1">или перетащите сюда</p>
+                            </div>
+                            <p class="text-xs text-gray-500">PDF, DOCX, TXT, JPG, PNG до 10MB</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <label for="judging-text" class="block text-sm font-medium text-gray-700">Или вставьте текст петиции о судействе (по желанию)</label>
+                    <textarea id="judging-text" name="judging-text" rows="3" class="mt-1 block w-full shadow-sm sm:text-sm border border-gray-300 rounded-md"></textarea>
+                </div>
+            </div>
+
+            <!-- Загрузка для вклада (условно) -->
+            <div id="contributionUpload" class="mb-8 p-6 bg-gray-50 rounded-lg hidden">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">
+                    <i class="fas fa-lightbulb text-indigo-600 mr-2"></i>
+                    Документы по вкладу
+                </h3>
+                <p class="text-sm text-gray-500 mb-4">
+                    Загрузите документы, подтверждающие ваш значительный вклад. Примеры:
+                    <span class="block mt-1 text-indigo-600">Патенты, документация продуктов, письма от экспертов</span>
+                </p>
+                <div class="mt-4 file-upload">
+                    <label class="block text-sm font-medium text-gray-700">Загрузить файлы</label>
+                    <div class="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md transition duration-300 ease-in-out">
+                        <div class="space-y-1 text-center">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <div class="flex text-sm text-gray-600">
+                                <label for="contribution-files" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                                    <span>Загрузить файлы</span>
+                                    <input id="contribution-files" name="contribution-files" type="file" class="sr-only" multiple>
+                                </label>
+                                <p class="pl-1">или перетащите сюда</p>
+                            </div>
+                            <p class="text-xs text-gray-500">PDF, DOCX, TXT, JPG, PNG до 10MB</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <label for="contribution-text" class="block text-sm font-medium text-gray-700">Или вставьте текст петиции о вкладе (по желанию)</label>
+                    <textarea id="contribution-text" name="contribution-text" rows="3" class="mt-1 block w-full shadow-sm sm:text-sm border border-gray-300 rounded-md"></textarea>
+                </div>
+            </div>
+
+            <!-- Загрузка для авторства (условно) -->
+            <div id="authorshipUpload" class="mb-8 p-6 bg-gray-50 rounded-lg hidden">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">
+                    <i class="fas fa-pen-fancy text-indigo-600 mr-2"></i>
+                    Документы по авторству
+                </h3>
+                <p class="text-sm text-gray-500 mb-4">
+                    Загрузите документы, подтверждающие ваше научное авторство. Примеры:
+                    <span class="block mt-1 text-indigo-600">Опубликованные статьи, цитирования, обложки журналов</span>
+                </p>
+                <div class="mt-4 file-upload">
+                    <label class="block text-sm font-medium text-gray-700">Загрузить файлы</label>
+                    <div class="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md transition duration-300 ease-in-out">
+                        <div class="space-y-1 text-center">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <div class="flex text-sm text-gray-600">
+                                <label for="authorship-files" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                                    <span>Загрузить файлы</span>
+                                    <input id="authorship-files" name="authorship-files" type="file" class="sr-only" multiple>
+                                </label>
+                                <p class="pl-1">или перетащите сюда</p>
+                            </div>
+                            <p class="text-xs text-gray-500">PDF, DOCX, TXT, JPG, PNG до 10MB</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <label for="authorship-text" class="block text-sm font-medium text-gray-700">Или вставьте текст петиции об авторстве (по желанию)</label>
+                    <textarea id="authorship-text" name="authorship-text" rows="3" class="mt-1 block w-full shadow-sm sm:text-sm border border-gray-300 rounded-md"></textarea>
+                </div>
+            </div>
+
+            <div class="mt-10 text-center">
+                <button id="submitAnalysisBtn" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Отправить на анализ
+                    <i class="fas fa-search ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Секция обработки (изначально скрыта) -->
+    <div id="processingSection" class="hidden py-24 bg-gray-50">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="animate-pulse">
+                <i class="fas fa-brain text-indigo-600 text-6xl mb-6"></i>
+            </div>
+            <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                Анализируем ваш кейс EB-1A
+            </h2>
+            <p class="mt-4 text-xl text-gray-500">
+                Наш ИИ тщательно изучает ваши документы на соответствие требованиям USCIS...
+            </p>
+            <div class="mt-8 w-full bg-gray-200 rounded-full h-4">
+                <div id="progressBar" class="progress-bar bg-indigo-600 h-4 rounded-full" style="width: 0%"></div>
+            </div>
+            <p id="progressText" class="mt-2 text-sm text-gray-500">Инициализация анализа...</p>
+        </div>
+    </div>
+
+    <!-- Секция результатов (изначально скрыта) -->
+    <div id="resultsSection" class="hidden py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    Результаты анализа вашего кейса EB-1A
+                </h2>
+                <p class="mt-4 text-xl text-gray-500">
+                    Ниже представлена оценка ваших материалов для петиции с помощью ИИ
+                </p>
+            </div>
+
+            <!-- Общая оценка -->
+            <div class="bg-indigo-50 rounded-lg p-6 mb-8 fade-in">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 bg-indigo-100 rounded-md p-3">
+                        <i class="fas fa-chart-line text-indigo-600 text-xl"></i>
+                    </div>
+                    <div class="ml-5 w-0 flex-1">
+                        <h3 class="text-lg font-medium text-gray-900">Общая готовность кейса</h3>
+                        <div class="mt-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-900">Ваша оценка</span>
+                                <span id="overallScore" class="text-xl font-bold text-indigo-600">78%</span>
+                            </div>
+                            <div class="mt-2 w-full bg-gray-200 rounded-full h-4">
+                                <div class="progress-bar bg-indigo-600 h-4 rounded-full" style="width: 78%"></div>
+                            </div>
+                            <p class="mt-2 text-sm text-gray-500">
+                                На основании нашего анализа ваших документов, ваш кейс достаточно сильный, но может быть улучшен в некоторых аспектах.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Детальный анализ по критериям -->
+            <div class="mb-8 fade-in">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Детальный анализ по критериям</h3>
+                <div class="bg-white shadow overflow-hidden sm:rounded-md">
+                    <ul class="divide-y divide-gray-200">
+                        <!-- Анализ наград -->
+                        <li class="px-4 py-4 sm:px-6">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <i class="fas fa-trophy text-indigo-600 mr-3"></i>
+                                    <p class="text-sm font-medium text-indigo-600 truncate">Награды</p>
+                                </div>
+                                <div class="ml-2 flex-shrink-0 flex">
+                                    <p class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                        Средний риск
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="mt-2 sm:flex sm:justify-between">
+                                <div class="sm:flex">
+                                    <p class="flex items-center text-sm text-gray-500">
+                                        <i class="fas fa-check-circle text-green-500 mr-1.5"></i>
+                                        Награда национального уровня подтверждена
+                                    </p>
+                                    <p class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6">
+                                        <i class="fas fa-check-circle text-green-500 mr-1.5"></i>
+                                        Достаточное освещение в СМИ
+                                    </p>
+                                </div>
+                                <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+                                    <i class="fas fa-exclamation-triangle text-yellow-500 mr-1.5"></i>
+                                    Отсутствует информация о жюри
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm font-medium text-gray-500">Готовность</span>
+                                    <span class="text-sm font-medium text-indigo-600">65%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-yellow-500 h-2 rounded-full" style="width: 65%"></div>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <h4 class="text-sm font-medium text-gray-900">Рекомендации:</h4>
+                                <ul class="mt-2 list-disc list-inside text-sm text-gray-500">
+                                    <li>Предоставьте список членов жюри для вашей награды</li>
+                                    <li>Укажите статистику по количеству участников конкурса</li>
+                                    <li>Получите письмо от организаторов с описанием критериев отбора</li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        <!-- Анализ членства -->
+                        <li class="px-4 py-4 sm:px-6">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <i class="fas fa-users text-indigo-600 mr-3"></i>
+                                    <p class="text-sm font-medium text-indigo-600 truncate">Членство</p>
+                                </div>
+                                <div class="ml-2 flex-shrink-0 flex">
+                                    <p class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        Низкий риск
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="mt-2 sm:flex sm:justify-between">
+                                <div class="sm:flex">
+                                    <p class="flex items-center text-sm text-gray-500">
+                                        <i class="fas fa-check-circle text-green-500 mr-1.5"></i>
+                                        Требования к членству подтверждены
+                                    </p>
+                                    <p class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6">
+                                        <i class="fas fa-check-circle text-green-500 mr-1.5"></i>
+                                        Указаны выдающиеся члены
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm font-medium text-gray-500">Готовность</span>
+                                    <span class="text-sm font-medium text-indigo-600">92%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-green-500 h-2 rounded-full" style="width: 92%"></div>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <h4 class="text-sm font-medium text-gray-900">Рекомендации:</h4>
+                                <ul class="mt-2 list-disc list-inside text-sm text-gray-500">
+                                    <li>Добавьте больше документации о процессе отбора членов</li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        <!-- Анализ публикаций -->
+                        <li class="px-4 py-4 sm:px-6">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <i class="fas fa-newspaper text-indigo-600 mr-3"></i>
+                                    <p class="text-sm font-medium text-indigo-600 truncate">Публикации</p>
+                                </div>
+                                <div class="ml-2 flex-shrink-0 flex">
+                                    <p class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                        Высокий риск
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="mt-2 sm:flex sm:justify-between">
+                                <div class="sm:flex">
+                                    <p class="flex items-center text-sm text-gray-500">
+                                        <i class="fas fa-check-circle text-green-500 mr-1.5"></i>
+                                        3 публикации в СМИ предоставлены
+                                    </p>
+                                </div>
+                                <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+                                    <i class="fas fa-exclamation-triangle text-red-500 mr-1.5"></i>
+                                    Не все в крупных изданиях
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm font-medium text-gray-500">Готовность</span>
+                                    <span class="text-sm font-medium text-indigo-600">45%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-red-500 h-2 rounded-full" style="width: 45%"></div>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <h4 class="text-sm font-medium text-gray-900">Рекомендации:</h4>
+                                <ul class="mt-2 list-disc list-inside text-sm text-gray-500">
+                                    <li>Получите публикации еще как минимум в 2 крупных национальных изданиях</li>
+                                    <li>Сосредоточьтесь на публикациях, которые обсуждают ваши достижения</li>
+                                    <li>Укажите тиражи изданий</li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Следующие шаги -->
+            <div class="bg-indigo-50 rounded-lg p-6 mb-8 fade-in">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Следующие шаги</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-white p-4 rounded-lg shadow">
+                        <div class="flex items-center mb-3">
+                            <div class="flex-shrink-0 bg-indigo-100 rounded-md p-2">
+                                <i class="fas fa-file-pdf text-indigo-600"></i>
+                            </div>
+                            <h4 class="ml-3 text-sm font-medium text-gray-900">Скачать полный отчет</h4>
+                        </div>
+                        <p class="text-sm text-gray-500">
+                            Получите детальный PDF-отчет со всем анализом и рекомендациями для передачи вашему адвокату.
+                        </p>
+                        <button class="mt-4 inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Скачать PDF
+                            <i class="fas fa-download ml-1"></i>
+                        </button>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow">
+                        <div class="flex items-center mb-3">
+                            <div class="flex-shrink-0 bg-indigo-100 rounded-md p-2">
+                                <i class="fas fa-user-tie text-indigo-600"></i>
+                            </div>
+                            <h4 class="ml-3 text-sm font-medium text-gray-900">Консультация эксперта</h4>
+                        </div>
+                        <p class="text-sm text-gray-500">
+                            Запланируйте консультацию со специалистом по EB-1A для личного обсуждения вашего кейса.
+                        </p>
+                        <button class="mt-4 inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Забронировать
+                            <i class="fas fa-calendar-alt ml-1"></i>
+                        </button>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow">
+                        <div class="flex items-center mb-3">
+                            <div class="flex-shrink-0 bg-indigo-100 rounded-md p-2">
+                                <i class="fas fa-redo text-indigo-600"></i>
+                            </div>
+                            <h4 class="ml-3 text-sm font-medium text-gray-900">Повторная оценка</h4>
+                        </div>
+                        <p class="text-sm text-gray-500">
+                            После внесения улучшений вернитесь для повторной оценки вашего усиленного кейса.
+                        </p>
+                        <button class="mt-4 inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Сохранить
+                            <i class="fas fa-save ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Подвал -->
+    <footer class="bg-white">
+        <div class="max-w-7xl mx-auto py-12 px-4 overflow-hidden sm:px-6 lg:px-8">
+            <nav class="-mx-5 -my-2 flex flex-wrap justify-center" aria-label="Footer">
+                <div class="px-5 py-2">
+                    <a href="#" class="text-base text-gray-500 hover:text-gray-900">О нас</a>
+                </div>
+                <div class="px-5 py-2">
+                    <a href="#" class="text-base text-gray-500 hover:text-gray-900">Блог</a>
+                </div>
+                <div class="px-5 py-2">
+                    <a href="#" class="text-base text-gray-500 hover:text-gray-900">Вакансии</a>
+                </div>
+                <div class="px-5 py-2">
+                    <a href="#" class="text-base text-gray-500 hover:text-gray-900">Пресса</a>
+                </div>
+                <div class="px-5 py-2">
+                    <a href="#" class="text-base text-gray-500 hover:text-gray-900">Доступность</a>
+                </div>
+                <div class="px-5 py-2">
+                    <a href="#" class="text-base text-gray-500 hover:text-gray-900">Партнеры</a>
+                </div>
+            </nav>
+            <div class="mt-8 flex justify-center space-x-6">
+                <a href="#" class="text-gray-400 hover:text-gray-500">
+                    <span class="sr-only">Facebook</span>
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-gray-500">
+                    <span class="sr-only">Instagram</span>
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-gray-500">
+                    <span class="sr-only">Twitter</span>
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-gray-500">
+                    <span class="sr-only">GitHub</span>
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-gray-500">
+                    <span class="sr-only">LinkedIn</span>
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+            </div>
+            <p class="mt-8 text-center text-base text-gray-400">
+                &copy; 2023 Анализатор EB-1A. Все права защищены.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Навигация между секциями
+        document.getElementById('startAnalysisBtn').addEventListener('click', function() {
+            document.getElementById('criteriaSection').classList.remove('hidden');
+            document.getElementById('startAnalysisBtn').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        document.getElementById('continueToUploadBtn').addEventListener('click', function() {
+            document.getElementById('uploadSection').classList.remove('hidden');
+            
+            // Показать секции загрузки для выбранных критериев
+            if(document.getElementById('awards-checkbox').checked) {
+                document.getElementById('awardsUpload').classList.remove('hidden');
+            }
+            if(document.getElementById('membership-checkbox').checked) {
+                document.getElementById('membershipUpload').classList.remove('hidden');
+            }
+            if(document.getElementById('published-checkbox').checked) {
+                document.getElementById('publishedUpload').classList.remove('hidden');
+            }
+            if(document.getElementById('judging-checkbox').checked) {
+                document.getElementById('judgingUpload').classList.remove('hidden');
+            }
+            if(document.getElementById('contribution-checkbox').checked) {
+                document.getElementById('contributionUpload').classList.remove('hidden');
+            }
+            if(document.getElementById('authorship-checkbox').checked) {
+                document.getElementById('authorshipUpload').classList.remove('hidden');
+            }
+            
+            document.getElementById('continueToUploadBtn').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        document.getElementById('submitAnalysisBtn').addEventListener('click', function() {
+            document.getElementById('processingSection').classList.remove('hidden');
+            
+            // Симуляция обработки
+            let progress = 0;
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const interval = setInterval(function() {
+                progress += Math.floor(Math.random() * 10) + 5;
+                if(progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    progressText.textContent = "Анализ завершен!";
+                    
+                    // Показать результаты после задержки
+                    setTimeout(function() {
+                        document.getElementById('resultsSection').classList.remove('hidden');
+                        document.getElementById('processingSection').classList.add('hidden');
+                        document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+                    }, 1000);
+                } else {
+                    progressBar.style.width = progress + '%';
+                    progressText.textContent = "Обработка документов... " + progress + "%";
+                }
+            }, 300);
+        });
+
+        // Превью загружаемых файлов (упрощено для демо)
+        const fileInputs = document.querySelectorAll('input[type="file"]');
+        fileInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                const files = this.files;
+                const parentDiv = this.closest('.file-upload');
+                if(files.length > 0) {
+                    const fileList = document.createElement('div');
+                    fileList.className = 'mt-2 text-sm text-gray-600';
+                    
+                    for(let i = 0; i < files.length; i++) {
+                        const fileItem = document.createElement('div');
+                        fileItem.className = 'flex items-center mt-1';
+                        fileItem.innerHTML = `
+                            <i class="fas fa-file-alt text-gray-400 mr-2"></i>
+                            <span>${files[i].name}</span>
+                            <span class="ml-2 text-xs text-gray-500">(${(files[i].size / 1024).toFixed(1)} KB)</span>
+                        `;
+                        fileList.appendChild(fileItem);
+                    }
+                    
+                    // Удалить существующее превью
+                    const existingPreview = parentDiv.querySelector('.file-list-preview');
+                    if(existingPreview) {
+                        existingPreview.remove();
+                    }
+                    
+                    fileList.classList.add('file-list-preview');
+                    parentDiv.appendChild(fileList);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
